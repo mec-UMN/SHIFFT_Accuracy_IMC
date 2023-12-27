@@ -8,6 +8,7 @@ import sys
 import shutil
 import time
 import pandas as pd
+import datetime
 
 from fft import conv2d_Q_new_fn, conv2d_Q_bit_slice_fn,conv2d_Q_val_fn
 from model import model_test, test, model_train, train, data_from_csv, no_train, train_pattern, train_prec, test_new, train_factor
@@ -53,9 +54,20 @@ def main():
 		net=net.forward(ds)
 	elif train_mode==4:
 		net=test_new(net.adc_quant_factor, net.E_adc_cos_new, net.E_adc_sin_new, net.E_input)
-		net=net.forward(ds)
+		net,SQNR=net.forward(ds)
 	else:
 		test(net, ds)
+	
+	# Get the current date and time
+	current_time = datetime.datetime.now()
+
+	# Create a formatted string for the timestamp
+	timestamp_str = current_time.strftime("%Y-%m-%d_%H-%M-%S")
+
+	# Combine the timestamp with a file extension or any other desired format
+	file_name = f"./Outputs/output_{timestamp_str}.csv"
+	x_df=pd.DataFrame(SQNR)
+	x_df.to_csv(file_name,  index=False, header=False)
 	
 if __name__ == '__main__':
 	main()

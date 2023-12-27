@@ -15,7 +15,7 @@ import tensorflow_datasets as tfds
 from tensorflow_datasets.core.utils import gcs_utils
 from fft import conv2d_Q_new_fn, conv2d_Q_bit_slice_fn,conv2d_Q_val_fn,weight_quantize
 from Utils import weight_generate, accuracy, weight_generate_imc, shift_add, shift_add_11, map_update, shift_add_input, input_generate, offset, prob_sign,fft_symm
-from param import types,fft_size,xbar_size, uniform, weight_width, in_width, cell_prec,adc_bits, roll, quant, first_term, in_split,vat, runs_test, runs_train, train_mode, dataset
+from param import types,fft_size,xbar_size, uniform, weight_width, in_width, cell_prec,adc_bits, roll, quant, first_term, in_split,vat, runs_test, runs_train, train_mode, dataset, in_quant, wg_quant
 from Utils_2 import val_generate, weight_generate_main,initialize_params,weight_quantize_main, initialize_params_no_train,load_dataset_ecg, initialize_params_test
 from fft_Util import conv_main, E_update, conv_grad
 from plot_Utils import plot_curve, plot_curve_prec
@@ -528,7 +528,7 @@ class test_new():
 		self.conv_main = conv_main(self.weight_cos,self.weight_sin)
 		self.conv_grad=conv_grad(self.mul, self.prec_mean_no_vat_cos, self.prec_mean_no_vat_sin, self.prec_stddev_no_vat_cos, self.prec_stddev_no_vat_sin,  self.prec_SQNR_no_vat_cos,  self.prec_SQNR_no_vat_sin)
 		self.adc_quant_factor=adc_quant_factor
-		self.E_input=E_input
+		self.E_input=None
 		#import pdb;pdb.set_trace()
 	
 	def forward(self, ds):
@@ -561,10 +561,12 @@ class test_new():
 			
 			for j in range(0,types):
 				#import pdb;pdb.set_trace()
-				if input_fft_cos_up[j].unique().size()[0]>2**in_width:
-					import pdb;pdb.set_trace()
-				if self.weight_cos_quant[j].unique().size()[0]>2**(cell_prec[j])*3/2:
-					import pdb;pdb.set_trace()
+				if in_quant:
+					if input_fft_cos_up[j].unique().size()[0]>2**in_width:
+						import pdb;pdb.set_trace()
+				if wg_quant:
+					if self.weight_cos_quant[j].unique().size()[0]>2**(cell_prec[j])*3/2:
+						import pdb;pdb.set_trace()
 				#import pdb;pdb.set_trace()
 				if i ==0:
 					self.conv_main.sync(self.E_adc_cos_new, self.E_adc_sin_new, self.E_adc_cos,  self.E_adc_sin, self.sign_prob,self.weight_cos_quant, self.weight_sin_quant, self.alpha_cos, self.alpha_sin, self.E_weight_cos, self.E_weight_sin, self.E_adc_cos_slice, self.E_adc_sin_slice, self.basicblock_no_vat_pre_cos, self.basicblock_no_vat_pre_sin)
@@ -600,6 +602,7 @@ class test_new():
 			#import pdb;pdb.set_trace()
 			#print(basicblock_no_vat.data)
 		#plot_curve_prec(self)
+		SQNR=[]
 		for j in range(0,types):
 			print("crossbar size", xbar_size[j], "roll", roll[j], "cell_prec" ,cell_prec[j], "adc_bits", adc_bits[j], "vat", vat[j])
 		#print ("variations False")
@@ -613,8 +616,9 @@ class test_new():
 			print("Stddev", self.prec_stddev_no_vat_sin[:,j].mean())
 			print("SQNR", self.prec_SQNR_no_vat_sin[:,j].mean())
 			print(" ")
-		import pdb;pdb.set_trace()
-		return self
+		#import pdb;pdb.set_trace()
+			SQNR.append(self.prec_SQNR_no_vat_cos[:,j].mean())
+		return self, SQNR
 
 class train_factor():
 	def __init__(self):
@@ -681,7 +685,7 @@ class train_factor():
 			self.E_adc_cos_new[j]=np.repeat(self.E_adc_cos[j],rows,axis=0)[0:rows]
 			self.E_adc_sin_new[j]=np.repeat(self.E_adc_sin[j],rows,axis=0)[0:rows]
 		"""
-		import pdb;pdb.set_trace()
+		#import pdb;pdb.set_trace()
 		return self
 """
 for j in range(0, types):
