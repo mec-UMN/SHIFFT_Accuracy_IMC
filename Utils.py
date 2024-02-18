@@ -10,7 +10,7 @@ import random
 import pandas as pd
 import csv
 from quant import quantize_fn_uniform
-from param import in_quant, runs_train
+from param import in_quant, runs_train, fft_size
 
 def map_update(weight, map_type):
     if map_type == 0:
@@ -50,13 +50,14 @@ def accuracy(output, target, n):
 def accuracy_max(output, target, n):
     """Computes the precision@k for the specified values of k"""
     #import pdb;pdb.set_trace()
+    MAE=(output - target).abs().sum()/(fft_size)
     error = ((output - target)*100*(2**(n-1))/target.abs().max()).abs()
     #error = torch.div((output - target)*100, target).abs()
     mean = error.mean()
     stddev = error.std()
     SQNR = 10*torch.log10(torch.div(target.square().mean(),(output - target).square().mean()))
     #import pdb;pdb.set_trace()
-    return mean.item(), stddev.item(), SQNR.item()
+    return mean.item(), stddev.item(), SQNR.item(), MAE.item()
 
 
 def shift_add(input, wg_width, w_bit):
@@ -179,7 +180,7 @@ def prob_sign(input):
     out[input>=0] =0
     neg = out.count_nonzero().item()
     prob = neg/size
-    print("neg:",neg)
+    #print("neg:",neg)
     return prob 
 
 def fft_symm(input, cos):

@@ -526,7 +526,7 @@ class test_new():
 		self.val_generate = val_generate(self.weight_cos, self.weight_sin)
 		self=initialize_params_test(self, runs_test, E_adc_cos, E_adc_sin)
 		self.conv_main = conv_main(self.weight_cos,self.weight_sin)
-		self.conv_grad=conv_grad(self.mul, self.prec_mean_no_vat_cos, self.prec_mean_no_vat_sin, self.prec_stddev_no_vat_cos, self.prec_stddev_no_vat_sin,  self.prec_SQNR_no_vat_cos,  self.prec_SQNR_no_vat_sin)
+		self.conv_grad=conv_grad(self.mul, self.prec_mean_no_vat_cos, self.prec_mean_no_vat_sin, self.prec_stddev_no_vat_cos, self.prec_stddev_no_vat_sin,  self.prec_SQNR_no_vat_cos,  self.prec_SQNR_no_vat_sin, self.prec_MAE_no_vat_cos, self.prec_MAE_no_vat_sin)
 		self.adc_quant_factor=adc_quant_factor
 		self.E_input=None
 		#import pdb;pdb.set_trace()
@@ -565,8 +565,9 @@ class test_new():
 					if input_fft_cos_up[j].unique().size()[0]>2**in_width:
 						import pdb;pdb.set_trace()
 				if wg_quant:
-					if self.weight_cos_quant[j].unique().size()[0]>2**(cell_prec[j])*3/2:
-						import pdb;pdb.set_trace()
+					if not vat[j]:
+						if self.weight_cos_quant[j].unique().size()[0]>2**(cell_prec[j])*3/2:
+							import pdb;pdb.set_trace()
 				#import pdb;pdb.set_trace()
 				if i ==0:
 					self.conv_main.sync(self.E_adc_cos_new, self.E_adc_sin_new, self.E_adc_cos,  self.E_adc_sin, self.sign_prob,self.weight_cos_quant, self.weight_sin_quant, self.alpha_cos, self.alpha_sin, self.E_weight_cos, self.E_weight_sin, self.E_adc_cos_slice, self.E_adc_sin_slice, self.basicblock_no_vat_pre_cos, self.basicblock_no_vat_pre_sin)
@@ -610,11 +611,14 @@ class test_new():
 			print("Mean", self.prec_mean_no_vat_cos[:,j].mean())
 			print("Stddev", self.prec_stddev_no_vat_cos[:,j].mean())
 			print("SQNR", self.prec_SQNR_no_vat_cos[:,j].mean())
+			#import pdb;pdb.set_trace()
+			print("MAE", self.prec_MAE_no_vat_cos[:,j].mean())
 			print(" ")
 			print("sine")
 			print("Mean", self.prec_mean_no_vat_sin[:,j].mean())
 			print("Stddev", self.prec_stddev_no_vat_sin[:,j].mean())
 			print("SQNR", self.prec_SQNR_no_vat_sin[:,j].mean())
+			print("MAE", self.prec_MAE_no_vat_sin[:,j].mean())
 			print(" ")
 		#import pdb;pdb.set_trace()
 			SQNR.append(self.prec_SQNR_no_vat_cos[:,j].mean())

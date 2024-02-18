@@ -70,7 +70,7 @@ class conv_main():
         return self.basicblock_no_vat_pre_cos, self.basicblock_no_vat_pre_sin,self.E_adc_cos, self.E_adc_sin
 
 class conv_grad(torch.autograd.Function):
-    def __init__(self, mul, prec_mean_no_vat_cos, prec_mean_no_vat_sin, prec_stddev_no_vat_cos, prec_stddev_no_vat_sin,  prec_SQNR_no_vat_cos,  prec_SQNR_no_vat_sin):
+    def __init__(self, mul, prec_mean_no_vat_cos, prec_mean_no_vat_sin, prec_stddev_no_vat_cos, prec_stddev_no_vat_sin,  prec_SQNR_no_vat_cos,  prec_SQNR_no_vat_sin,prec_MAE_no_vat_cos, prec_MAE_no_vat_sin):
 		#import pdb;pdb.set_trace()
         super(conv_grad, self).__init__()
         self.mul = mul
@@ -80,6 +80,8 @@ class conv_grad(torch.autograd.Function):
         self.prec_stddev_no_vat_sin=prec_stddev_no_vat_sin
         self.prec_SQNR_no_vat_cos=prec_SQNR_no_vat_cos
         self.prec_SQNR_no_vat_sin=prec_SQNR_no_vat_sin 
+        self.prec_MAE_no_vat_cos =  prec_MAE_no_vat_cos
+        self.prec_MAE_no_vat_sin =  prec_MAE_no_vat_sin
 
     def sync(self,basicblock_no_vat_pre_cos, basicblock_no_vat_pre_sin, indices_sin, indices_cos,basicblock_no_vat_cos, basicblock_no_vat_sin):
         self.basicblock_no_vat_pre_cos = basicblock_no_vat_pre_cos
@@ -128,8 +130,8 @@ class conv_grad(torch.autograd.Function):
         offset_cos.append((basicblock_no_vat_cos[:,j]-basicblock_val_cos).mean())
         offset_sin.append((basicblock_no_vat_sin[:,j]-basicblock_val_sin).mean())
         """
-        self.prec_mean_no_vat_cos[i][j], self.prec_stddev_no_vat_cos[i][j], self.prec_SQNR_no_vat_cos[i][j]= accuracy_max(basicblock_no_vat_cos.data[1:fft_size], basicblock_val_cos.data[1:fft_size], adc_bits[j])
-        self.prec_mean_no_vat_sin[i][j], self.prec_stddev_no_vat_sin[i][j], self.prec_SQNR_no_vat_sin[i][j]= accuracy_max(basicblock_no_vat_sin.data[1:fft_size], basicblock_val_sin.data[1:fft_size], adc_bits[j])
+        self.prec_mean_no_vat_cos[i][j], self.prec_stddev_no_vat_cos[i][j], self.prec_SQNR_no_vat_cos[i][j], self.prec_MAE_no_vat_cos[i][j]= accuracy_max(basicblock_no_vat_cos.data[1:fft_size], basicblock_val_cos.data[1:fft_size], adc_bits[j])
+        self.prec_mean_no_vat_sin[i][j], self.prec_stddev_no_vat_sin[i][j], self.prec_SQNR_no_vat_sin[i][j],  self.prec_MAE_no_vat_sin[i][j]= accuracy_max(basicblock_no_vat_sin.data[1:fft_size], basicblock_val_sin.data[1:fft_size], adc_bits[j])
         """
         if i < runs:
             #import pdb;pdb.set_trace()

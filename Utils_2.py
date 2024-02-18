@@ -124,9 +124,11 @@ def initialize_params_test(self, runs, E_cos, E_sin):
     self.prec_mean_no_vat_cos = np.zeros((runs,types))
     self.prec_stddev_no_vat_cos = np.zeros((runs,types))
     self.prec_SQNR_no_vat_cos = np.zeros((runs,types))
+    self.prec_MAE_no_vat_cos = np.zeros((runs,types))
     self.prec_mean_no_vat_sin = np.zeros((runs,types))
     self.prec_stddev_no_vat_sin = np.zeros((runs,types))
     self.prec_SQNR_no_vat_sin =  np.zeros((runs,types))
+    self.prec_MAE_no_vat_sin = np.zeros((runs,types))
     
     self.indices_sin = np.zeros((fft_size, 1))
     self.indices_cos = np.zeros((fft_size, 1))

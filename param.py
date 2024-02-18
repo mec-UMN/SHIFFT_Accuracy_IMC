@@ -76,6 +76,7 @@ uniform = np.array([False, False],dtype=bool)
 """
 #cell_prec = args.cell_prec
 cell_prec= np.repeat(np.array([args.cell_prec]),types)
+#cell_prec= np.repeat(np.array([2,4]),1)
 vat = np.tile(np.array([False, args.vat]), int(types/2))
 #vat = args.vat
 fft_size = args.fft_size
@@ -119,7 +120,7 @@ elif train_mode==4:
 if quant:
 	in_quant=1
 	wg_quant=1
-	adc_quant=1
+	adc_quant=0
 else:
 	in_quant=0
 	wg_quant=0
