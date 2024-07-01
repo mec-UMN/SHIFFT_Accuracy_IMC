@@ -1,5 +1,7 @@
 # SHIFFT_Accuracy_IMC
 
+![SHIFFT Architecture](https://github.com/mec-UMN/SHIFFT_Accuracy_IMC/blob/main/SHIFFT%20architecture.jpg)
+
 ## Usage
 
 ## References
