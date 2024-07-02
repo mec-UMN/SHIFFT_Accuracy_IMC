@@ -50,8 +50,12 @@ def accuracy(output, target, n):
 def accuracy_max(output, target, n):
     """Computes the precision@k for the specified values of k"""
     #import pdb;pdb.set_trace()
+<<<<<<< HEAD
     MAE=(output - target).abs().sum()/(fft_size)
     MAE/=output.abs().max()
+=======
+    MAE=(output - target).abs().sum()/(output.abs().max()*fft_size)
+>>>>>>> refs/remotes/origin/main
     error = ((output - target)*100*(2**(n-1))/target.abs().max()).abs()
     #target_max=torch.clone(target)
     #target_max[target_max.abs()<0.01]=0.01

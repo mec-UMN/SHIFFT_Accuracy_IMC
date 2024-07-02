@@ -609,15 +609,15 @@ class test_new():
 			print("crossbar size", xbar_size[j], "roll", roll[j], "cell_prec" ,cell_prec[j], "adc_bits", adc_bits[j], "vat", vat[j])
 		#print ("variations False")
 			print("cosine")
-			print("Mean", self.prec_mean_no_vat_cos[:,j].mean())
-			print("Stddev", self.prec_stddev_no_vat_cos[:,j].mean())
+			#print("Mean", self.prec_mean_no_vat_cos[:,j].mean())
+			#print("Stddev", self.prec_stddev_no_vat_cos[:,j].mean())
 			print("SQNR", self.prec_SQNR_no_vat_cos[:,j].mean())
 			#import pdb;pdb.set_trace()
 			print("MAE", self.prec_MAE_no_vat_cos[:,j].mean())
 			print(" ")
 			print("sine")
-			print("Mean", self.prec_mean_no_vat_sin[:,j].mean())
-			print("Stddev", self.prec_stddev_no_vat_sin[:,j].mean())
+			#print("Mean", self.prec_mean_no_vat_sin[:,j].mean())
+			#print("Stddev", self.prec_stddev_no_vat_sin[:,j].mean())
 			print("SQNR", self.prec_SQNR_no_vat_sin[:,j].mean())
 			print("MAE", self.prec_MAE_no_vat_sin[:,j].mean())
 			print(" ")
@@ -649,7 +649,7 @@ class train_factor():
 			#import pdb;pdb.set_trace()
 			#audio=example['audio']
 			#audio = np.array(list(audio_dict.items()))[0,1]
-			print(type(audio),label,i)
+			#print(type(audio),label,i)
 		#for k in range(ds.shape[0]):
 			#audio =ds.numpy()[i]
 			audio_torch = torch.from_numpy(audio)

@@ -48,11 +48,16 @@ parser.add_argument('--workers', type=int, default=4,
 args = parser.parse_args()
 dataset = args.dataset
 #xbar_size = args.xbar_size
-types = 2
+types = 6
 train_mode =4
 if train_mode ==0 or train_mode ==3 or train_mode==4:
+<<<<<<< HEAD
 	xbar_size= np.repeat(np.array([512]), types)
 	#xbar_size = np.repeat(np.array([1024, 512, 256, 128, 64, 64]),1)
+=======
+	#xbar_size= np.repeat(np.array([1024]), types)
+	xbar_size = np.repeat(np.array([1024, 512, 256, 128, 64, 64]),1)
+>>>>>>> refs/remotes/origin/main
 	#xbar_size = np.repeat(np.array([4096, 2048, 1024, 512, 256, 128]),1)
 	#xbar_size = np.repeat(np.array([256, 128, 64, 64, 64, 64]),1)
 	adc_bits=np.repeat(np.array([6]), types)

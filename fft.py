@@ -19,7 +19,8 @@ def conv2d_Q_new_fn(input, weight, w_bit, adc_bits, xbar_size, vat, quant, first
     else:
         weight_q_no_vat = weight
     if vat:
-        weight_q=add_vat(w_bit,weight_q_no_vat)
+        weight_q.append(0.9*weight_q_no_vat)
+        #weight_q=add_vat(w_bit,weight_q_no_vat)
         #import pdb;pdb.set_trace()
     else:
         weight_q = weight_q_no_vat
@@ -127,7 +128,12 @@ def weight_quantize(weight_orgin, weight_roll, w_bit, w_width, vat, quant, roll,
             E_weights=1
         #import pdb;pdb.set_trace()
         if vat[i]:
+<<<<<<< HEAD
             weight_q.append(add_vat_denoise(w_bit[i],weight_q_no_vat))
+=======
+            weight_q.append(0.9*weight_q_no_vat)
+            #weight_q.append(add_vat(w_bit[i],weight_q_no_vat))
+>>>>>>> refs/remotes/origin/main
             #import pdb;pdb.set_trace()
         else:
             weight_q.append(weight_q_no_vat)
