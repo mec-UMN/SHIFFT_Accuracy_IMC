@@ -128,12 +128,7 @@ def weight_quantize(weight_orgin, weight_roll, w_bit, w_width, vat, quant, roll,
             E_weights=1
         #import pdb;pdb.set_trace()
         if vat[i]:
-<<<<<<< HEAD
             weight_q.append(add_vat_denoise(w_bit[i],weight_q_no_vat))
-=======
-            weight_q.append(0.9*weight_q_no_vat)
-            #weight_q.append(add_vat(w_bit[i],weight_q_no_vat))
->>>>>>> refs/remotes/origin/main
             #import pdb;pdb.set_trace()
         else:
             weight_q.append(weight_q_no_vat)
