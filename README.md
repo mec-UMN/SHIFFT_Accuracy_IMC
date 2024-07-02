@@ -7,7 +7,10 @@ SHIFFT is a a scalable hybrid in-memory computing FFT accelerator (SHIFFT), a hy
 These codes implement the DFT algorithm, account for inherent quantizations and weight bit slicing in the architecture, and incorporate the statistical training methodology to obtain the maximum quantization value of ADC.
 
 ## Usage
-
+To change the configuration of the parameters, edit the file params.py and to run the simulations use the following command:
+```
+python run_fft.py
+```
 ## References
 ```
 Pragnya Sudershan Nalla, Zhenyu Wang, Sapan Agarwal, T. Patrick Xiao, Christopher H. Bennett, Matthew J. Marinella, Jae-sun Seo, and Yu Cao, SHIFFT: A Scalable Hybrid In-Memory Computing FFT Accelerator, ISVLSI 2024
