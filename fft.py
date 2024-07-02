@@ -9,7 +9,7 @@ import argparse
 import random
 import pandas as pd
 from quant import quantize_fn, quantize_fn_bit_slice, quantize_fn_uniform
-from vat import add_vat,add_vat_new
+from vat import add_vat,add_vat_new, add_vat_denoise
 from param import wg_quant, adc_quant
 
 def conv2d_Q_new_fn(input, weight, w_bit, adc_bits, xbar_size, vat, quant, first_term, uniform, E, alpha):
@@ -127,7 +127,7 @@ def weight_quantize(weight_orgin, weight_roll, w_bit, w_width, vat, quant, roll,
             E_weights=1
         #import pdb;pdb.set_trace()
         if vat[i]:
-            weight_q.append(add_vat(w_bit[i],weight_q_no_vat))
+            weight_q.append(add_vat_denoise(w_bit[i],weight_q_no_vat))
             #import pdb;pdb.set_trace()
         else:
             weight_q.append(weight_q_no_vat)

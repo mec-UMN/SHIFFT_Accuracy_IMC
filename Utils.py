@@ -51,8 +51,11 @@ def accuracy_max(output, target, n):
     """Computes the precision@k for the specified values of k"""
     #import pdb;pdb.set_trace()
     MAE=(output - target).abs().sum()/(fft_size)
+    MAE/=output.abs().max()
     error = ((output - target)*100*(2**(n-1))/target.abs().max()).abs()
-    #error = torch.div((output - target)*100, target).abs()
+    #target_max=torch.clone(target)
+    #target_max[target_max.abs()<0.01]=0.01
+    #error = torch.div((output - target)*100,target_max).abs()
     mean = error.mean()
     stddev = error.std()
     SQNR = 10*torch.log10(torch.div(target.square().mean(),(output - target).square().mean()))

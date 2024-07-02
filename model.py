@@ -604,6 +604,7 @@ class test_new():
 			#print(basicblock_no_vat.data)
 		#plot_curve_prec(self)
 		SQNR=[]
+		MAE=[]
 		for j in range(0,types):
 			print("crossbar size", xbar_size[j], "roll", roll[j], "cell_prec" ,cell_prec[j], "adc_bits", adc_bits[j], "vat", vat[j])
 		#print ("variations False")
@@ -622,7 +623,8 @@ class test_new():
 			print(" ")
 		#import pdb;pdb.set_trace()
 			SQNR.append(self.prec_SQNR_no_vat_cos[:,j].mean())
-		return self, SQNR
+			MAE.append(self.prec_MAE_no_vat_sin[:,j].mean())
+		return self, SQNR, MAE
 
 class train_factor():
 	def __init__(self):

@@ -54,7 +54,7 @@ def main():
 		net=net.forward(ds)
 	elif train_mode==4:
 		net=test_new(net.adc_quant_factor, net.E_adc_cos_new, net.E_adc_sin_new, net.E_input)
-		net,SQNR=net.forward(ds)
+		net,SQNR, MAE=net.forward(ds)
 	else:
 		test(net, ds)
 	
@@ -66,7 +66,7 @@ def main():
 
 	# Combine the timestamp with a file extension or any other desired format
 	file_name = f"./Outputs/output_{timestamp_str}.csv"
-	x_df=pd.DataFrame(SQNR)
+	x_df=pd.DataFrame(MAE)
 	x_df.to_csv(file_name,  index=False, header=False)
 	
 if __name__ == '__main__':

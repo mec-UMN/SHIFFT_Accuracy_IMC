@@ -12,13 +12,13 @@ import pandas as pd
 def add_vat(w_bit, weight_q):
     shape_w = weight_q.size()
     weight_pre_vat=weight_q
-    var=0.3
+    var=1
     sigma=[0.1035]
-    #sigma.append([0.1035, 0.276])
+    sigma.append([0.1035, 0.276])
     #sigma.append(np.repeat(np.array([var]), 2))
     sigma.append([0.1898, 0.2259, 0.3549])
-    #sigma.append([0.0560, 0.0836, 0.2761, 0.354929])
-    sigma.append(np.repeat(np.array([var]), 4))
+    sigma.append([0.0560, 0.0836, 0.2761, 0.354929])
+    #sigma.append(np.repeat(np.array([var]), 4))
 
     #import pdb;pdb.set_trace()
     if w_bit==1:
@@ -100,7 +100,8 @@ def add_vat(w_bit, weight_q):
         weight_4bit_1=torch.clone(weight_4bit_1_1)
         #if self.iter==0:
         #	self.var_exp_4_1 = torch.exp(torch.empty(shape_w).normal_(0, 0.3549))
-        var_exp_4_1 = torch.exp(torch.empty(shape_w).normal_(0, sigma[3][3]))
+        #var_exp_4_1 = torch.exp(torch.empty(shape_w).normal_(0, sigma[3][3]))
+        var_exp_4_1=var
         #print(var_exp_4_1.norm())
         weight_4bit_vat1=torch.clone(weight_4bit_1*var_exp_4_1)
 
@@ -114,7 +115,8 @@ def add_vat(w_bit, weight_q):
         
         weight_4bit_2=torch.clone(weight_4bit_1_2)
 
-        var_exp_4_2 = torch.exp(torch.empty(shape_w).normal_(0, sigma[3][2]))
+        #var_exp_4_2 = torch.exp(torch.empty(shape_w).normal_(0, sigma[3][2]))
+        var_exp_4_2=var
         weight_4bit_vat2=torch.clone(weight_4bit_2*var_exp_4_2)
 
         #-----------------------3rd bit------------------------
@@ -124,7 +126,8 @@ def add_vat(w_bit, weight_q):
         #import pdb;pdb.set_trace()
         weight_4bit_3=torch.clone(weight_4bit_1_3)
 
-        var_exp_4_3 = torch.exp(torch.empty(shape_w).normal_(0, sigma[3][1]))
+        #var_exp_4_3 = torch.exp(torch.empty(shape_w).normal_(0, sigma[3][1]))
+        var_exp_4_3=var
         weight_4bit_vat3=torch.clone(weight_4bit_3*var_exp_4_3)
         #print(weight_4bit_vat3)
 
@@ -134,13 +137,15 @@ def add_vat(w_bit, weight_q):
         #import pdb;pdb.set_trace()
         weight_4bit_4=torch.clone(weight_4bit_1_4)
 
-        var_exp_4_4 = torch.exp(torch.empty(shape_w).normal_(0, sigma[3][0]))
+        #var_exp_4_4 = torch.exp(torch.empty(shape_w).normal_(0, sigma[3][0]))
+        var_exp_4_4=var
         weight_4bit_vat4=torch.clone(weight_4bit_4*var_exp_4_4)
         #print(weight_4bit_vat3)
 
         weight_4bit=torch.add(weight_4bit_vat1,weight_4bit_vat2)
         weight_4bit=torch.add(weight_4bit,weight_4bit_vat3)
         weight_4bit=torch.add(weight_4bit,weight_4bit_vat4)
+        import pdb;pdb.set_trace()
         weight_q=weight_4bit
     
     #import pdb;pdb.set_trace()
@@ -287,3 +292,7 @@ def add_vat_new(w_bit, weight_q):
     import pdb;pdb.set_trace()
     
     return weight_q
+
+def add_vat_denoise(w_bit, weight_q):
+    var=0.9
+    return weight_q*var

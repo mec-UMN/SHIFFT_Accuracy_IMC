@@ -10,5 +10,5 @@ os.system('python main.py \
             --dataset speech_commands\
 			--adc_bits 6\
             --xbar_size 1024 \
-            --fft_size 1024\
+            --fft_size 4096\
             --pattern 1')
